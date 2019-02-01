@@ -1,5 +1,5 @@
 name: Outwatch Router
-baseurl: ''
+baseurl: /outwatch-router
 description: A router for outwatch
 highlighter: rouge
 docs: true
