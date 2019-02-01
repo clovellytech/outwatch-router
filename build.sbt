@@ -44,7 +44,6 @@ lazy val router  = (project in file("./outwatch-router"))
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       "io.github.outwatch" % "outwatch" % "ea240c6d04",
-      "org.http4s" %% "parboiled" % "1.0.0",
       "org.scalatest" %%% "scalatest" % "3.0.5" % Test
     ),
     copyFastOptJS := {
@@ -69,7 +68,6 @@ lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
     skip in publish := true,
-    aggregate in reStart := false,
   )
   .dependsOn(router)
   .aggregate(router)
