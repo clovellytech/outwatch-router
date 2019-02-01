@@ -1,3 +1,9 @@
+---
+layout: home
+title:  "Outwatch Router"
+section: "home"
+---
+
 Outwatch Router
 ===
 

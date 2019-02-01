@@ -14,12 +14,11 @@ jobs:
     - stage: verify
 
       script:
-        - sbt ++$TRAVIS_SCALA_VERSION todomvc/fullOptJS::webpack
+        - sbt ++$TRAVIS_SCALA_VERSION router/fullOptJS::webpack
         - sbt docs/mdoc
         - sbt docs/makeMicrosite
-        - mkdir -p router-docs/site/todomvc
+        - mkdir -p router-docs/site
         - cp -R router-docs/target/site/* ./router-docs/site/
-        - cp ./router-docs/site/Readme.html ./router-docs/site/index.html
 
 deploy:
   provider: pages
@@ -29,5 +28,4 @@ deploy:
   local-dir: router-docs/site
   target-branch: gh-pages
   on:
-    branch: master
-  
+    branch: master  

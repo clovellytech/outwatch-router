@@ -15,15 +15,36 @@ val commonSettings = Seq(
 val withTests : String = "compile->compile;test->test"
 val testOnly : String = "test->test"
 
-lazy val docs = (project in file("./router-docs"))
-  .settings(name := "outwatch-router-docs")
-  .enablePlugins(MdocPlugin)
+lazy val docs = project
+  .in(file("./router-docs"))
   .settings(commonSettings)
+  .enablePlugins(MdocPlugin)
+  .enablePlugins(MicrositesPlugin)
+  .settings(
+    name := "outwatch-router-docs",
+    description := "A router for outwatch",
+    organizationName := "com.clovellytech",
+    organizationHomepage := Some(url("https://github.com/clovellytech")),
+    homepage := Some(url("https://clovellytech.github.io/outwatch-router")),
+    micrositeUrl := "https://clovellytech.github.io/outwatch-router",
+    micrositeBaseUrl := "/outwatch-router",
+    micrositeName := "Outwatch Router",
+    micrositeCompilingDocsTool := WithMdoc,
+    micrositeGithubOwner := "clovellytech",
+    micrositeGithubRepo := "outwatch-router",
+    scalacOptions := options.scalacConsole
+  )
+  .settings(
+    mdocVariables := Map(
+      "VERSION" -> version.value
+    )
+  )
   .dependsOn(router)
 
 lazy val copyFastOptJS = TaskKey[Unit]("copyFastOptJS", "Copy javascript files to target directory")
 
-lazy val router  = (project in file("./outwatch-router"))
+lazy val router  = project 
+  .in(file("./outwatch-router"))
   .settings(name := "outwatch-router")
   .enablePlugins(ScalaJSPlugin)
   .enablePlugins(ScalaJSBundlerPlugin)
@@ -33,7 +54,6 @@ lazy val router  = (project in file("./outwatch-router"))
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     useYarn := true, // makes scalajs-bundler use yarn instead of npm
     jsEnv in Test := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv,
-    scalaJSUseMainModuleInitializer := true,
     scalaJSModuleKind := ModuleKind.CommonJSModule, // configure Scala.js to emit a JavaScript module instead of a top-level script
     version in webpack := "4.16.1",
     version in startWebpackDevServer := "3.1.4",
@@ -63,7 +83,8 @@ lazy val exampleApp = (project in file("router-example"))
   .settings(commonSettings)
   .dependsOn(router)
 
-lazy val root = (project in file("."))
+lazy val root = project
+  .in(file("."))
   .settings(name := "outwatch-router-root")
   .settings(commonSettings)
   .settings(
