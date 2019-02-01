@@ -1,0 +1,11 @@
+name: Outwatch Router
+baseurl: ''
+description: A router for outwatch
+highlighter: rouge
+docs: true
+collections:
+  tut:
+    output: true
+version: 0.0.1
+org: com.clovellytech
+markdown: kramdown
