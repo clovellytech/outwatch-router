@@ -1,4 +1,5 @@
 import dependencies._
+import xerial.sbt.Sonatype._
 
 cancelable in Global := true
 
@@ -14,6 +15,23 @@ val commonSettings = Seq(
 
 val withTests : String = "compile->compile;test->test"
 val testOnly : String = "test->test"
+
+lazy val publishSettings = Seq(
+  useGpg := true,
+  publishMavenStyle := true,
+  publishTo := sonatypePublishTo.value,
+  publishArtifact in Test := false,
+  homepage := Some(url("https://github.com/clovellytech/outwatch-router")),
+  pomIncludeRepository := Function.const(false),
+  sonatypeProfileName := "com.clovellytech",
+
+  // License of your choice
+  licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
+
+  // Where is the source code hosted
+  sonatypeProjectHosting := Some(GitHubHosting("clovellytech", "outwatch-router", "pattersonzak@gmail.com"))
+)
+
 
 lazy val docs = project
   .in(file("./router-docs"))
@@ -77,6 +95,7 @@ lazy val router  = project
     addCommandAlias("dev", "; compile; fastOptJS::startWebpackDevServer; devwatch; fastOptJS::stopWebpackDevServer"),
     addCommandAlias("devwatch", "~; fastOptJS; copyFastOptJS")
   )
+  .settings(publishSettings)
 
 lazy val exampleApp = (project in file("router-example"))
   .settings(name := "outwatch-example")
