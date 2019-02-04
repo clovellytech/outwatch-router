@@ -3,7 +3,7 @@ package outwatch
 import outwatch.dom.VDomModifier
 
 package object router {
-  type RouterStore = ProHandler[Action, RouterState]
+  type RouterStore[P] = ProHandler[Action, RouterState[P]]
 
-  type RouterResolve = PartialFunction[Path, VDomModifier]
+  type RouterResolve[P] = PartialFunction[P, VDomModifier]
 }
