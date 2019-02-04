@@ -7,12 +7,10 @@ section: "home"
 Outwatch Router
 ===
 
+Route creation strategy was mostly taken from Http4s. To create paths and map them to pages:
+
 ```scala mdoc 
-import cats._
-import cats.implicits._
-import cats.Applicative
-import cats.data.Kleisli
-import outwatch.router._, Router._
+import outwatch.router._
 
 sealed abstract class Page
 case class RootPage() extends Page
@@ -21,29 +19,18 @@ case class Register() extends Page
 case class Profile(userId: String) extends Page
 case class NotFound() extends Page
 
-object Page{
-  def root: Page = RootPage()
-  def login: Page = Login()
-  def register: Page = Register()
-  def profile(userId: String): Page = Profile(userId)
-  def notFound: Page = NotFound()
+def routes: PartialFunction[Path, Page] = {
+  case Root => RootPage()
+  case Root / "login" => Login()
+  case Root / "register" => Register()
+  case Root / "profile" / userId => Profile(userId)
+  case _ => NotFound()
 }
 
-def routes[F[_]: Applicative]: AppRouter[F, Page] = Kleisli[F, Path, Page] { 
-  case Root => Page.root.pure[F]
-  case Root / "login" => Page.login.pure[F]
-  case Root / "register" => Page.register.pure[F]
-  case Root / "profile" / userId => Page.profile(userId).pure[F]
-  case _ => Page.notFound.pure[F]
-}
+routes(Root)
+routes(Root / "login")
+routes(Root / "profile" / "saopa98f")
 
-val router = routes[Id]
-
-router.run(Root)
-router.run(Root / "login")
-router.run(Root / "profile" / "saopa98f")
-
-router.run(Path("/profile/asd"))
-router.run(Path("/apsinoasn"))
+routes(Path("/profile/asd"))
+routes(Path("/apsinoasn"))
 ```
-
