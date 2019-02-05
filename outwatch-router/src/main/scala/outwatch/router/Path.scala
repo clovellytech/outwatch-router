@@ -85,6 +85,21 @@ final case class /(parent: Path, child: String) extends Path {
 }
 
 /**
+  * Path separator extractor:
+  * {{{
+  *   Path("/1/2/3/test.json") match {
+  *     case "1" /: "2" /: _ =>  ...
+  * }}}
+  */
+object /: {
+  def unapply(path: Path): Option[(String, Path)] =
+    path.toList match {
+      case head :: tail => Some(head -> Path(tail))
+      case Nil => None
+    }
+}
+
+/**
   * Root extractor:
   * {{{
   *   Path("/") match {
