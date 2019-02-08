@@ -7,6 +7,7 @@ import java.nio.{ByteBuffer, CharBuffer}
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.UTF_8
 
+
 /** Base class for path extractors. */
 trait Path {
   def /(child: String) = new /(this, child)
@@ -62,6 +63,9 @@ object Path {
 
   def apply(list: List[String]): Path =
     list.foldLeft(Root: Path)(_ / _)
+
+  def apply(left: Path, right: Path): Path =
+    right.toList.foldLeft(left)(_ / _)
 
   def unapplySeq(path: Path): Some[List[String]] =
     Some(path.toList)
