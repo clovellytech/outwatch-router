@@ -15,7 +15,7 @@ final case class RouterState[P](page: P)
 class AppRouter[F[_]: LiftIO, P](root: Path, f: Path => P) {
   def routerReducer(state: RouterState[P], action: Action): RouterState[P] = action match {
     case Replace(path) =>
-      Path.unapplySeq(Path(root, path)).foreach(p => window.history.replaceState("", "", p.mkString("/")))
+      window.history.replaceState("", "", Path(root, path).toString)
       state.copy(page = f(path))
     case _ => state
   }
