@@ -140,3 +140,5 @@ GitHub.sublime-settings
 # End of https://www.gitignore.io/api/sbt,scala,bloop,metals,intellij,sublimetext
 
 /.idea/
+
+/outwatch-router/yarn.lock

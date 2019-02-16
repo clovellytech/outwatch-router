@@ -81,7 +81,7 @@ lazy val router  = project
     webpackBundlingMode in fastOptJS := BundlingMode.LibraryOnly(),
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "io.github.outwatch" % "outwatch" % "ea240c6d04",
+      "io.github.outwatch" % "outwatch" % "e0f28a8fbb",
       "org.scalatest" %%% "scalatest" % "3.0.5" % Test
     ),
     copyFastOptJS := {
