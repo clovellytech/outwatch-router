@@ -8,7 +8,7 @@ Most of this code is adapted from [http4s](http4s.org)'s route parsing and path 
 Add to library dependencies:
 
 ```
-	"com.clovellytech" %%% "outwatch-router" % "0.0.4"
+	"com.clovellytech" %%% "outwatch-router" % "0.0.5"
 ```
 
 See [documentation][doc-root]
