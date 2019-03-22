@@ -13,6 +13,8 @@ Add to library dependencies:
 
 See [documentation][doc-root]
 
+This router is also demonstrated at [outwatch-examples](https://github.com/clovellytech/outwatch-examples).
+
 Todo:
 * Work on documentation, provide example of links
 
