@@ -28,4 +28,4 @@ deploy:
   local-dir: router-docs/site
   target-branch: gh-pages
   on:
-    branch: fixdocslayout  
+    branch: master  
