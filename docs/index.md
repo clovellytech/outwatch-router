@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: docs
 title:  "Outwatch Router"
 section: "home"
 ---
