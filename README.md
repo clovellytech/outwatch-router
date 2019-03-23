@@ -3,7 +3,7 @@ outwatch-router [![Build Status][travis-img]][travis-link]
 
 Easy routing for [outwatch](https://outwatch.github.io) on scala.js
 
-Most of this code is adapted from [http4s](http4s.org)'s route parsing and path pattern matching. 
+Most of this code is adapted from [http4s](http://http4s.org)'s route parsing and path pattern matching. 
 
 Add to library dependencies:
 
