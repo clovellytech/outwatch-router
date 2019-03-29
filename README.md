@@ -1,4 +1,4 @@
-outwatch-router [![Build Status][travis-img]][travis-link]
+outwatch-router [![Build Status][travis-img]][travis-link] [![Chat on Gitter][gitter-img]][gitter-link]
 ===
 
 Easy routing for [outwatch](https://outwatch.github.io) on scala.js
@@ -20,4 +20,6 @@ Todo:
 
 [travis-img]:https://travis-ci.com/clovellytech/outwatch-router.svg?branch=master
 [travis-link]:https://travis-ci.com/clovellytech/outwatch-router
+[gitter-img]:https://badges.gitter.im/clovellytech/outwatch-router.svg
+[gitter-link]:https://gitter.im/clovellytech/outwatch-router?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 [doc-root]:https://clovellytech.github.io/outwatch-router
