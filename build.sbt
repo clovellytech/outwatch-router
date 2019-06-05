@@ -1,20 +1,25 @@
-import dependencies._
 import xerial.sbt.Sonatype._
 
 cancelable in Global := true
+
+val compilerPlugins = Seq(
+  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.2"),
+  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+)
+
+val versions = new {
+  val scalatest = "3.0.5"
+  val outwatch = "676f94a"
+}
 
 val commonSettings = Seq(
   organization := "com.clovellytech",
   version := Version.version,
   scalaVersion := Version.scalaVersion,
-  resolvers ++= addResolvers,
   scalacOptions ++= options.scalac,
   scalacOptions in (Compile, console) := options.scalacConsole,
   updateOptions := updateOptions.value.withLatestSnapshots(false)
 ) ++ compilerPlugins
-
-val withTests : String = "compile->compile;test->test"
-val testOnly : String = "test->test"
 
 lazy val publishSettings = Seq(
   useGpg := true,
@@ -81,8 +86,8 @@ lazy val router  = project
     webpackBundlingMode in fastOptJS := BundlingMode.LibraryOnly(),
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "io.github.outwatch" % "outwatch" % "676f94a",
-      "org.scalatest" %%% "scalatest" % "3.0.5" % Test
+      "io.github.outwatch" % "outwatch" % versions.outwatch,
+      "org.scalatest" %%% "scalatest" % versions.scalatest % Test,
     ),
     copyFastOptJS := {
       val inDir = (crossTarget in (Compile, fastOptJS)).value
