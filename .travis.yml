@@ -1,5 +1,5 @@
 language: scala
-
+dist: xenial
 install:
   - rvm use 2.3.0 --install --fuzzy
   - gem update --system
@@ -8,7 +8,7 @@ install:
 
 scala:
    - 2.12.8
-   
+
 jobs:
   include:
     - stage: verify
@@ -28,4 +28,4 @@ deploy:
   local-dir: router-docs/site
   target-branch: gh-pages
   on:
-    branch: master  
+    branch: master

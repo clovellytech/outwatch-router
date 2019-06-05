@@ -9,7 +9,7 @@ val compilerPlugins = Seq(
 
 val versions = new {
   val scalatest = "3.0.5"
-  val outwatch = "e0f28a8fbb"
+  val outwatch = "676f94a"
 }
 
 val commonSettings = Seq(
