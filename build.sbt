@@ -61,7 +61,7 @@ lazy val docs = project
 
 lazy val copyFastOptJS = TaskKey[Unit]("copyFastOptJS", "Copy javascript files to target directory")
 
-lazy val router  = project 
+lazy val router  = project
   .in(file("./outwatch-router"))
   .settings(name := "outwatch-router")
   .enablePlugins(ScalaJSPlugin)
@@ -81,7 +81,7 @@ lazy val router  = project
     webpackBundlingMode in fastOptJS := BundlingMode.LibraryOnly(),
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "io.github.outwatch" % "outwatch" % "781a8a7",
+      "io.github.outwatch" % "outwatch" % "676f94a",
       "org.scalatest" %%% "scalatest" % "3.0.5" % Test
     ),
     copyFastOptJS := {
