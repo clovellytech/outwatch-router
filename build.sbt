@@ -8,7 +8,7 @@ val compilerPlugins = Seq(
 )
 
 val versions = new {
-  val scalatest = "3.0.5"
+  val scalatest = "3.1.0-SNAP11"
   val outwatch = "676f94a"
 }
 
@@ -73,11 +73,8 @@ lazy val router  = project
   .enablePlugins(ScalaJSBundlerPlugin)
   .settings(commonSettings)
   .settings(
-    scalaJSModuleKind := ModuleKind.CommonJSModule,
-    scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     useYarn := true, // makes scalajs-bundler use yarn instead of npm
-    jsEnv in Test := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv,
-    scalaJSModuleKind := ModuleKind.CommonJSModule, // configure Scala.js to emit a JavaScript module instead of a top-level script
+    requireJsDomEnv in Test := true,
     version in webpack := "4.16.1",
     version in startWebpackDevServer := "3.1.4",
     webpackDevServerExtraArgs := Seq("--progress", "--color"),
@@ -101,11 +98,6 @@ lazy val router  = project
     addCommandAlias("devwatch", "~; fastOptJS; copyFastOptJS")
   )
   .settings(publishSettings)
-
-lazy val exampleApp = (project in file("router-example"))
-  .settings(name := "outwatch-example")
-  .settings(commonSettings)
-  .dependsOn(router)
 
 lazy val root = project
   .in(file("."))
