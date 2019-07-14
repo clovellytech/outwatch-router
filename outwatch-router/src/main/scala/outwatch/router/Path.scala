@@ -15,6 +15,8 @@ trait Path {
   def parent: Path
   def lastOption: Option[String]
   def startsWith(other: Path): Boolean
+  def pathString: String
+  def toUrlString: String = if (pathString.isEmpty) "/" else pathString
 }
 
 object Path {
@@ -80,8 +82,12 @@ final case class /(parent: Path, child: String) extends Path {
 
   def lastOption: Some[String] = Some(child)
 
-  lazy val asString: String = s"$parent/${UrlCodingUtils.pathEncode(child)}"
+  lazy val asString: String = s"${parent.pathString}/${UrlCodingUtils.pathEncode(child)}"
+
   override def toString: String = asString
+
+  def pathString: String = asString
+
   def startsWith(other: Path): Boolean = {
     val components = other.toList
     toList.take(components.length) === components
@@ -115,7 +121,8 @@ case object Root extends Path {
   def toList: List[String] = Nil
   def parent: Path = this
   def lastOption: None.type = None
-  override def toString = ""
+  override def toString = "Root"
+  def pathString: String = ""
   def startsWith(other: Path): Boolean = other == Root
 }
 
