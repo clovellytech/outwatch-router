@@ -24,7 +24,7 @@ class AppRouter[P](siteRoot: Path, parent: Path, f: Path => P) {
   // Sync from the required page to the window.location
   def routerReducer(state: RouterState[P], action: Action): RouterState[P] = action match {
     case Replace(path) =>
-      window.history.pushState("", "", Path(siteRoot, Path(parent, path)).toString)
+      window.history.pushState("", "", Path(siteRoot, Path(parent, path)).toUrlString)
       state.copy(page = f(path))
     case _ => state
   }
