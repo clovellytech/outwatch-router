@@ -142,3 +142,6 @@ GitHub.sublime-settings
 /.idea/
 
 /outwatch-router/yarn.lock
+
+/.bsp
+metals.sbt
