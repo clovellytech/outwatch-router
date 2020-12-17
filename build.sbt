@@ -51,7 +51,6 @@ lazy val docs = project
     micrositeGithubRepo := "outwatch-router",
     scalacOptions := options.scalacConsole,
     libraryDependencies ++= Seq(
-      "io.monix" %%% "monix" % "3.2.2",
       "io.monix" %%% "monix-bio" % "1.1.0",
     ),
   )
