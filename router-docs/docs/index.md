@@ -45,6 +45,13 @@ import monix.bio._
 import outwatch.router.AppRouter
 import outwatch.router.dsl._
 
+object IntVar {
+    def unapply(str: String): Option[Int] = {
+      if (!str.isEmpty) str.toIntOption
+      else None
+    }
+  }
+
 object OutwatchApp extends BIOApp {
 
   sealed trait Page
