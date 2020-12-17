@@ -2,14 +2,9 @@ import xerial.sbt.Sonatype._
 
 cancelable in Global := true
 
-val compilerPlugins = Seq(
-  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.2"),
-  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
-)
-
 val versions = new {
-  val scalatest = "3.1.0-SNAP11"
-  val outwatch = "676f94a"
+  val scalatest = "3.2.2"
+  val outwatch = "61deece8"
 }
 
 val commonSettings = Seq(
@@ -18,8 +13,8 @@ val commonSettings = Seq(
   scalaVersion := Version.scalaVersion,
   scalacOptions ++= options.scalac,
   scalacOptions in (Compile, console) := options.scalacConsole,
-  updateOptions := updateOptions.value.withLatestSnapshots(false)
-) ++ compilerPlugins
+  updateOptions := updateOptions.value.withLatestSnapshots(false),
+)
 
 lazy val publishSettings = Seq(
   useGpg := true,
@@ -29,14 +24,13 @@ lazy val publishSettings = Seq(
   homepage := Some(url("https://github.com/clovellytech/outwatch-router")),
   pomIncludeRepository := Function.const(false),
   sonatypeProfileName := "com.clovellytech",
-
   // License of your choice
   licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
-
   // Where is the source code hosted
-  sonatypeProjectHosting := Some(GitHubHosting("clovellytech", "outwatch-router", "pattersonzak@gmail.com"))
+  sonatypeProjectHosting := Some(
+    GitHubHosting("clovellytech", "outwatch-router", "pattersonzak@gmail.com"),
+  ),
 )
-
 
 lazy val docs = project
   .in(file("./router-docs"))
@@ -55,18 +49,21 @@ lazy val docs = project
     micrositeCompilingDocsTool := WithMdoc,
     micrositeGithubOwner := "clovellytech",
     micrositeGithubRepo := "outwatch-router",
-    scalacOptions := options.scalacConsole
+    scalacOptions := options.scalacConsole,
+    libraryDependencies ++= Seq(
+      "io.monix" %%% "monix-bio" % "1.1.0",
+    ),
   )
   .settings(
     mdocVariables := Map(
-      "VERSION" -> version.value
-    )
+      "VERSION" -> version.value,
+    ),
   )
   .dependsOn(router)
 
 lazy val copyFastOptJS = TaskKey[Unit]("copyFastOptJS", "Copy javascript files to target directory")
 
-lazy val router  = project
+lazy val router = project
   .in(file("./outwatch-router"))
   .settings(name := "outwatch-router")
   .enablePlugins(ScalaJSPlugin)
@@ -81,21 +78,29 @@ lazy val router  = project
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.config.dev.js"),
     // https://scalacenter.github.io/scalajs-bundler/cookbook.html#performance
     webpackBundlingMode in fastOptJS := BundlingMode.LibraryOnly(),
-    resolvers += "jitpack" at "https://jitpack.io",
+    resolvers += "jitpack".at("https://jitpack.io"),
     libraryDependencies ++= Seq(
-      "io.github.outwatch" % "outwatch" % versions.outwatch,
+      "com.github.outwatch.outwatch" %%% "outwatch" % versions.outwatch,
+      "com.github.outwatch.outwatch" %%% "outwatch-util" % versions.outwatch,
       "org.scalatest" %%% "scalatest" % versions.scalatest % Test,
     ),
     copyFastOptJS := {
       val inDir = (crossTarget in (Compile, fastOptJS)).value
       val outDir = (crossTarget in (Compile, fastOptJS)).value / "dev"
-      val files = Seq("outwatch-router-fastopt-loader.js", "outwatch-router-frontend-fastopt.js", "outwatch-router-frontend-fastopt.js.map") map { p =>   (inDir / p, outDir / p) }
+      val files = Seq(
+        "outwatch-router-fastopt-loader.js",
+        "outwatch-router-frontend-fastopt.js",
+        "outwatch-router-frontend-fastopt.js.map",
+      ).map(p => (inDir / p, outDir / p))
       IO.copy(files, overwrite = true, preserveLastModified = true, preserveExecutable = true)
     },
     // hot reloading configuration:
     // https://github.com/scalacenter/scalajs-bundler/issues/180
-    addCommandAlias("dev", "; compile; fastOptJS::startWebpackDevServer; devwatch; fastOptJS::stopWebpackDevServer"),
-    addCommandAlias("devwatch", "~; fastOptJS; copyFastOptJS")
+    addCommandAlias(
+      "dev",
+      "; compile; fastOptJS::startWebpackDevServer; devwatch; fastOptJS::stopWebpackDevServer",
+    ),
+    addCommandAlias("devwatch", "~; fastOptJS; copyFastOptJS"),
   )
   .settings(publishSettings)
 
@@ -108,5 +113,3 @@ lazy val root = project
   )
   .dependsOn(router)
   .aggregate(router)
-
-
