@@ -15,7 +15,6 @@ val commonSettings = Seq(
 )
 
 lazy val publishSettings = Seq(
-  useGpg := true,
   publishMavenStyle := true,
   publishTo := sonatypePublishTo.value,
   publishArtifact in Test := false,

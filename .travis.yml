@@ -20,8 +20,8 @@ jobs:
     - env: TEST="docs"
       script:
         - sbt ++$TRAVIS_SCALA_VERSION router/fullOptJS::webpack
-        - sbt docs/mdoc
-        - sbt docs/makeMicrosite
+        - sbt ++$TRAVIS_SCALA_VERSION docs/mdoc
+        - sbt ++$TRAVIS_SCALA_VERSION docs/makeMicrosite
         - mkdir -p router-docs/site
         - cp -R router-docs/target/site/* ./router-docs/site/
       deploy:
@@ -34,4 +34,4 @@ jobs:
         on:
           branch: master
     - stage: release
-      script: sbt ci-release
+      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
