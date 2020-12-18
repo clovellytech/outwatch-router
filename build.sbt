@@ -59,6 +59,7 @@ lazy val docs = project
     mdocVariables := Map(
       "VERSION" -> version.value,
     ),
+    skip in publish := true,
   )
   .dependsOn(router)
 
