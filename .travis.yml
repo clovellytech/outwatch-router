@@ -6,18 +6,42 @@ install:
   - gem install sass
   - gem install jekyll -v 3.2.1
 
-scala:
-   - 2.13.4
+scala_212: &scala_212 2.12.12
+scala_213: &scala_213 2.13.4
 
 stages:
-  - name: docs
+  - name: test
   - name: release
     if: "((branch = master AND type = push) OR (tag IS present)) AND NOT fork"
 
 jobs:
   include:
-    - stage: docs
+    - &all_tests
+      stage: test
+      env: TEST="all_tests"
+      scala: *scala_212
+      script: sbt ++$TRAVIS_SCALA_VERSION test
+    - <<: *all_tests
+      env: TEST="all_tests"
+      scala: *scala_213
+      script: sbt ++$TRAVIS_SCALA_VERSION test
+    - env: TEST="styling"
+      scala: *scala_213
+      script: sbt ++$TRAVIS_SCALA_VERSION scalafmtCheckAll
     - env: TEST="docs"
+      scala: *scala_213
+      script:
+        - sbt ++$TRAVIS_SCALA_VERSION router/fullOptJS::webpack
+        - sbt ++$TRAVIS_SCALA_VERSION docs/mdoc
+    - stage: release
+      env: TEST="2.13 release"
+      scala: *scala_213
+      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
+    - env: TEST="2.12 release"
+      scala: *scala_212
+      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
+    - env: TEST="docs-deploy"
+      scala: *scala_213
       script:
         - sbt ++$TRAVIS_SCALA_VERSION router/fullOptJS::webpack
         - sbt ++$TRAVIS_SCALA_VERSION docs/mdoc
@@ -33,5 +57,4 @@ jobs:
         target-branch: gh-pages
         on:
           branch: master
-    - stage: release
-      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
+
