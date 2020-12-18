@@ -33,10 +33,21 @@ jobs:
       script:
         - sbt ++$TRAVIS_SCALA_VERSION router/fullOptJS::webpack
         - sbt ++$TRAVIS_SCALA_VERSION docs/mdoc
+    - stage: release
+      env: TEST="2.13 release"
+      scala: *scala_213
+      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
+    - env: TEST="2.12 release"
+      scala: *scala_212
+      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
+    - env: TEST="docs-deploy"
+      scala: *scala_213
+      script:
+        - sbt ++$TRAVIS_SCALA_VERSION router/fullOptJS::webpack
+        - sbt ++$TRAVIS_SCALA_VERSION docs/mdoc
         - sbt ++$TRAVIS_SCALA_VERSION docs/makeMicrosite
         - mkdir -p router-docs/site
         - cp -R router-docs/target/site/* ./router-docs/site/
-    - env: TEST="docs-deploy"
       deploy:
         github-token: $GITHUB_TOKEN
         keep-history: true
@@ -46,5 +57,4 @@ jobs:
         target-branch: gh-pages
         on:
           branch: master
-    - stage: release
-      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
+
