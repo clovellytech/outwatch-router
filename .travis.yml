@@ -10,7 +10,7 @@ scala_212: &scala_212 2.12.12
 scala_213: &scala_213 2.13.4
 
 stages:
-  - name: docs
+  - name: test
   - name: release
     if: "((branch = master AND type = push) OR (tag IS present)) AND NOT fork"
 
@@ -28,7 +28,6 @@ jobs:
     - env: TEST="styling"
       scala: *scala_213
       script: sbt ++$TRAVIS_SCALA_VERSION scalafmtCheckAll
-    - stage: docs
     - env: TEST="docs"
       scala: *scala_213
       script:
@@ -37,6 +36,7 @@ jobs:
         - sbt ++$TRAVIS_SCALA_VERSION docs/makeMicrosite
         - mkdir -p router-docs/site
         - cp -R router-docs/target/site/* ./router-docs/site/
+    - env: TEST="docs-deploy"
       deploy:
         github-token: $GITHUB_TOKEN
         keep-history: true
