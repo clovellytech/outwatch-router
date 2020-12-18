@@ -7,7 +7,6 @@ import java.nio.{ByteBuffer, CharBuffer}
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.UTF_8
 
-
 /** Base class for path extractors. */
 trait Path {
   def /(child: String) = new /(this, child)
@@ -76,7 +75,6 @@ object Path {
 //    Some(Path(request.pathInfo).toList)
 }
 
-
 final case class /(parent: Path, child: String) extends Path {
   lazy val toList: List[String] = parent.toList ++ List(child)
 
@@ -94,8 +92,7 @@ final case class /(parent: Path, child: String) extends Path {
   }
 }
 
-/**
-  * Path separator extractor:
+/** Path separator extractor:
   * {{{
   *   Path("/1/2/3/test.json") match {
   *     case "1" /: "2" /: _ =>  ...
@@ -109,8 +106,7 @@ object /: {
     }
 }
 
-/**
-  * Root extractor:
+/** Root extractor:
   * {{{
   *   Path("/") match {
   *     case Root => ...
@@ -126,7 +122,6 @@ case object Root extends Path {
   def startsWith(other: Path): Boolean = other == Root
 }
 
-
 private[router] object UrlCodingUtils {
 
   private val lower = ('a' to 'z').toSet
@@ -134,11 +129,11 @@ private[router] object UrlCodingUtils {
   private val num = ('0' to '9').toSet
   val Unreserved: Set[Char] = lower ++ upper ++ num ++ "-_.~"
 
-  private val toSkip : Set[Char] = Unreserved ++ "!$&'()*+,;=:/?@"
+  private val toSkip: Set[Char] = Unreserved ++ "!$&'()*+,;=:/?@"
 
   private val HexUpperCaseChars: Array[Char] = ('A' to 'F').toArray
-  /**
-    * Percent-encodes a string.  Depending on the parameters, this method is
+
+  /** Percent-encodes a string.  Depending on the parameters, this method is
     * appropriate for URI or URL form encoding.  Any resulting percent-encodings
     * are normalized to uppercase.
     *
@@ -151,10 +146,11 @@ private[router] object UrlCodingUtils {
     * subset of Reserved URI characters.
     */
   def urlEncode(
-    toEncode: String,
-    charset: Charset = UTF_8,
-    spaceIsPlus: Boolean = false,
-    toSkip: Char => Boolean = toSkip): String = {
+      toEncode: String,
+      charset: Charset = UTF_8,
+      spaceIsPlus: Boolean = false,
+      toSkip: Char => Boolean = toSkip,
+  ): String = {
     val in = charset.encode(toEncode)
     val out = CharBuffer.allocate((in.remaining() * 3).toInt)
     while (in.hasRemaining) {
@@ -165,8 +161,8 @@ private[router] object UrlCodingUtils {
         out.put('+')
       } else {
         out.put('%')
-        out.put(HexUpperCaseChars((c >> 4) & 0xF))
-        out.put(HexUpperCaseChars(c & 0xF))
+        out.put(HexUpperCaseChars((c >> 4) & 0xf))
+        out.put(HexUpperCaseChars(c & 0xf))
       }
     }
     out.flip()
@@ -179,8 +175,7 @@ private[router] object UrlCodingUtils {
   def pathEncode(s: String, charset: Charset = UTF_8): String =
     UrlCodingUtils.urlEncode(s, charset, false, SkipEncodeInPath)
 
-  /**
-    * Percent-decodes a string.
+  /** Percent-decodes a string.
     *
     * @param toDecode the string to decode
     * @param charset the charset of percent-encoded characters
@@ -189,10 +184,11 @@ private[router] object UrlCodingUtils {
     * is left percent-encoded.  Almost certainly should be left empty.
     */
   def urlDecode(
-    toDecode: String,
-    charset: Charset = UTF_8,
-    plusIsSpace: Boolean = false,
-    toSkip: Char => Boolean = Function.const(false)): String = {
+      toDecode: String,
+      charset: Charset = UTF_8,
+      plusIsSpace: Boolean = false,
+      toSkip: Char => Boolean = Function.const(false),
+  ): String = {
     val in = CharBuffer.wrap(toDecode)
     // reserve enough space for 3-byte UTF-8 characters.  4-byte characters are represented
     // as surrogate pairs of characters, and will get a luxurious 6 bytes of space.
