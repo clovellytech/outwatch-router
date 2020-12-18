@@ -7,11 +7,15 @@ val versions = new {
   val outwatch = "61deece8"
 }
 
+val scala213 = "2.13.4"
+val scala212 = "2.12.12"
+
 val commonSettings = Seq(
   organization := "com.clovellytech",
   scalacOptions ++= options.scalac,
   scalacOptions in (Compile, console) := options.scalacConsole,
   updateOptions := updateOptions.value.withLatestSnapshots(false),
+  crossScalaVersions in ThisBuild := Seq(scala213, scala212)
 )
 
 lazy val publishSettings = Seq(
