@@ -9,8 +9,6 @@ val versions = new {
 
 val commonSettings = Seq(
   organization := "com.clovellytech",
-  version := Version.version,
-  scalaVersion := Version.scalaVersion,
   scalacOptions ++= options.scalac,
   scalacOptions in (Compile, console) := options.scalacConsole,
   updateOptions := updateOptions.value.withLatestSnapshots(false),
