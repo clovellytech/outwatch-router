@@ -35,7 +35,7 @@ jobs:
         - sbt ++$TRAVIS_SCALA_VERSION docs/mdoc
     - stage: release
       env: TEST="release"
-      script: sbt ++$TRAVIS_SCALA_VERSION router/ci-release
+      script: sbt ++$TRAVIS_SCALA_VERSION ci-release
     - env: TEST="docs-deploy"
       scala: *scala_213
       script:
