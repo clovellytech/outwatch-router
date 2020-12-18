@@ -9,23 +9,29 @@ install:
 scala:
    - 2.13.4
 
+stages:
+  - name: docs
+  - name: release
+    if: "((branch = master AND type = push) OR (tag IS present)) AND NOT fork"
+
 jobs:
   include:
-    - stage: verify
-
+    - stage: docs
+    - env: TEST="docs"
       script:
         - sbt ++$TRAVIS_SCALA_VERSION router/fullOptJS::webpack
-        - sbt docs/mdoc
-        - sbt docs/makeMicrosite
+        - sbt ++$TRAVIS_SCALA_VERSION docs/mdoc
+        - sbt ++$TRAVIS_SCALA_VERSION docs/makeMicrosite
         - mkdir -p router-docs/site
         - cp -R router-docs/target/site/* ./router-docs/site/
-
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
-  local-dir: router-docs/site
-  target-branch: gh-pages
-  on:
-    branch: master
+      deploy:
+        github-token: $GITHUB_TOKEN
+        keep-history: true
+        local-dir: router-docs/site
+        provider: pages
+        skip_cleanup: true
+        target-branch: gh-pages
+        on:
+          branch: master
+    - stage: release
+      script: sbt ++$TRAVIS_SCALA_VERSION ci-release

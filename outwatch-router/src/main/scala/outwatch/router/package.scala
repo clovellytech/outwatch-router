@@ -1,6 +1,5 @@
 package outwatch
 
-import outwatch._
 import colibri.ProSubject
 
 package object router {
