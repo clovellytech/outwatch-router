@@ -18,20 +18,17 @@ jobs:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-
-
-
-    - name: Deploy
-      run:
-        - sbt router/fullOptJS::webpack
-        - sbt docs/mdoc
-        - sbt docs/makeMicrosite
-        - mkdir -p router-docs/site
-        - cp -R router-docs/target/site/* ./router-docs/site/
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: ./router-docs/site
-        CLEAN: true 
+      - name: Deploy
+        run:
+          - sbt router/fullOptJS::webpack
+          - sbt docs/mdoc
+          - sbt docs/makeMicrosite
+          - mkdir -p router-docs/site
+          - cp -R router-docs/target/site/* ./router-docs/site/
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: ./router-docs/site
+          CLEAN: true 
 
