@@ -1,0 +1,33 @@
+
+name: Tests
+
+on:
+  pull_request:
+    branches: ['*']
+  push:
+    branches: ['master']
+
+jobs:
+  build:
+    name: Build and Test Scala ${{matrix.scala}}
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        scala: [2.12.12, 2.13.3]
+        java: [adopt@1.11]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout current branch (full)
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java and Scala
+        uses: olafurpg/setup-scala@v5
+        with:
+          java-version: ${{ matrix.java }}
+                
+      - run: |
+          sbt ++${{ matrix.scala }} test
+          sbt ++${{ matrix.scala }} docs/mdoc
