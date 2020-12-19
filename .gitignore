@@ -145,3 +145,4 @@ GitHub.sublime-settings
 
 /.bsp
 metals.sbt
+.vscode
