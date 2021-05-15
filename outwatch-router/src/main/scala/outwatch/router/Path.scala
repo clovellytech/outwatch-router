@@ -131,7 +131,9 @@ private[router] object UrlCodingUtils {
 
   private val toSkip: Set[Char] = Unreserved ++ "!$&'()*+,;=:/?@"
 
-  private val HexUpperCaseChars: Array[Char] = ('A' to 'F').toArray
+  private val HexUpperCaseChars = (0 until 16).map { i =>
+    Character.toUpperCase(Character.forDigit(i, 16))
+  }
 
   /** Percent-encodes a string.  Depending on the parameters, this method is
     * appropriate for URI or URL form encoding.  Any resulting percent-encodings
